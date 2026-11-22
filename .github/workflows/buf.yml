@@ -1,0 +1,17 @@
+name: Buf
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  buf:
+    permissions:
+      contents: read
+    uses: pirlruc/commondevops/.github/workflows/common-buf.yml@de8e32e025dea9ca50df6f99fb0d3c5fa93261d0
+    with:
+      scripts_ref: de8e32e025dea9ca50df6f99fb0d3c5fa93261d0
+      blocking: true

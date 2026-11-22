@@ -1,0 +1,21 @@
+name: Container
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    uses: pirlruc/containerdevops/.github/workflows/container-build.yml@4d5c00e20786811f740b70ee9d46832fc979f126
+    with:
+      image_name: nodeio-serve:local
+      scripts_ref: 4d5c00e20786811f740b70ee9d46832fc979f126
+      push_handoff: false
+      scan_local: true
+      image_title: nodeio-serve
+      image_description: HTTP and gRPC ingress for a nodeio graph

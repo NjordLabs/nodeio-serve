@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package nodeio.v1;
+
+// Run one graph request. The payload is a JSON object.
+service GraphService {
+  rpc Run(RunRequest) returns (RunResponse);
+}
+
+message RunRequest {
+  bytes payload = 1;
+}
+
+message RunResponse {
+  bytes payload = 1;
+}

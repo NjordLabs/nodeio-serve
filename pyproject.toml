@@ -1,0 +1,94 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=82.0.1", "wheel>=0.47.0"]
+
+[project]
+name = "nodeio-serve"
+version = "0.1.0"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn>=0.32",
+]
+requires-python = ">=3.13"
+authors = [{name = "pirlruc"}]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+]
+description = "HTTP and gRPC ingress for a nodeio graph"
+license = "MIT"
+license-files = ["LICENSE"]
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = [
+  "bandit[toml]==1.9.4",
+  "coverage[toml]>=7.13.5",
+  "httpx>=0.28",
+  "interrogate>=1.7.0",
+  "mypy>=1.20.2",
+  "pylint>=3.0",
+  "pytest>=8.0",
+  "ruff==0.15.12",
+]
+
+[project.urls]
+Repository = "https://github.com/NjordLabs/nodeio-serve"
+
+[tool.bandit]
+exclude_dirs = [".venv", "build", "dist", "tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["nodeio_serve"]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+
+[tool.interrogate]
+fail-under = 95
+ignore-nested-functions = true
+
+[tool.mypy]
+disallow_untyped_defs = true
+explicit_package_bases = true
+mypy_path = ["src"]
+namespace_packages = true
+python_version = "3.13"
+
+[[tool.mypy.overrides]]
+disallow_untyped_defs = false
+module = "tests.*"
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.main]
+py-version = "3.13"
+source-roots = ["src"]
+
+[tool.pylint.messages_control]
+disable = [
+  "too-few-public-methods",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["D", "E", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.setuptools.package-data]
+nodeio_serve = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
