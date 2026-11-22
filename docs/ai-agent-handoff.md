@@ -33,6 +33,6 @@ image stays unpublished.
 
 - feat(ingress): add HTTP and gRPC run endpoints
 - fix(quality): decode JSON behind a stub and cover the echo entrypoint
-- docs(readme): install from the v0.1.0 git tag
+- docs(readme): install the v0.1.0 release wheel
 
 *Last updated: 2026-11-22.*

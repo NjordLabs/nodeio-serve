@@ -5,10 +5,10 @@ caller's function. This package does not import
 [nodeio](https://github.com/NjordLabs/nodeio). Point the handler at a
 nodeio graph when that is what should run.
 
-The package is not on PyPI. Install the release tag:
+The package is not on PyPI. Install the wheel from the GitHub Release:
 
 ```bash
-pip install "nodeio-serve @ git+https://github.com/NjordLabs/nodeio-serve.git@v0.1.0"
+pip install https://github.com/NjordLabs/nodeio-serve/releases/download/v0.1.0/nodeio_serve-0.1.0-py3-none-any.whl
 ```
 
 Requires Python 3.13.
