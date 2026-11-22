@@ -14,13 +14,16 @@ from nodeio_serve.grpc import RequestTooLarge
 
 
 async def _echo(payload: dict[str, object]) -> dict[str, object]:
+    """Run this step."""
     return {"echo": payload["n"]}
 
 
 def test_health_and_run() -> None:
+    """Run this step."""
     app = create_app(_echo)
 
     async def call() -> None:
+        """Run this step."""
         transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             health = await client.get("/health")
@@ -32,9 +35,11 @@ def test_health_and_run() -> None:
 
 
 def test_rejects_a_large_body_and_a_list() -> None:
+    """Run this step."""
     app = create_app(_echo, max_bytes=8)
 
     async def call() -> None:
+        """Run this step."""
         transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             large = await client.post("/v1/run", content=b"0123456789")
@@ -48,10 +53,12 @@ def test_rejects_a_large_body_and_a_list() -> None:
 
 
 def test_limit_holds_the_second_call() -> None:
+    """Run this step."""
     started = asyncio.Event()
     release = asyncio.Event()
 
     async def handler(payload: dict[str, object]) -> dict[str, object]:
+        """Run this step."""
         del payload
         started.set()
         await release.wait()
@@ -60,6 +67,7 @@ def test_limit_holds_the_second_call() -> None:
     app = create_app(handler, limit=1)
 
     async def call() -> None:
+        """Run this step."""
         transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             first = asyncio.create_task(client.post("/v1/run", json={"n": 1}))
@@ -75,9 +83,11 @@ def test_limit_holds_the_second_call() -> None:
 
 
 def test_grpc_run_caps_the_payload() -> None:
+    """Run this step."""
     servicer = GraphServicer(_echo, max_bytes=8)
 
     async def call() -> None:
+        """Run this step."""
         result = await servicer.run(json.dumps({"n": 2}).encode())
         assert json.loads(result) == {"echo": 2}
         with pytest.raises(RequestTooLarge):
@@ -91,5 +101,6 @@ def test_grpc_run_caps_the_payload() -> None:
 
 
 def test_module_entrypoint(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Run this step."""
     monkeypatch.setattr("uvicorn.run", lambda *args, **kwargs: None)
     runpy.run_module("nodeio_serve", run_name="__main__")

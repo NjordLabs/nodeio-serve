@@ -14,28 +14,38 @@ milestones:
             One HTTP application and one gRPC servicer share a handler,
             and an example image is built and scanned without being
             published.
-          decision: >-
-            In the context of a request-shaped graph, facing an
-            unbounded upload, we decided a body cap and a concurrency
-            limit in a separate package, to achieve an ingress that
-            does not change the engine, accepting that the image is an
-            example and is not published.
-          acceptance_criteria:
-            - Health and run routes exist
-            - A body over the cap is rejected
-            - Concurrent runs are bounded
-          guardrail_refs:
-            - PY-TEST-002
-          tasks:
-            - id: SERVE-001-T1
-              status: open
-              title: Implement the ingress and the example image
-              instructions:
-                files:
-                  - src/nodeio_serve/app.py
-                  - src/nodeio_serve/grpc.py
-                  - Dockerfile
-              verification:
-                - sh scripts/check-ci-local.sh
-              guardrail_refs:
-                - PY-TEST-002
+        decision: >-
+          In the context of a request-shaped graph, facing an
+          unbounded upload, we decided a body cap and a concurrency
+          limit in a separate package, to achieve an ingress that
+          does not change the engine, accepting that the image is an
+          example and is not published.
+        acceptance_criteria:
+          - Health and run routes exist
+          - A body over the cap is rejected
+          - Concurrent runs are bounded
+        guardrail_refs:
+          - PY-TEST-002
+        tasks:
+          - id: SERVE-001-T1
+            status: open
+            title: Implement the ingress and the example image
+            instructions:
+              files:
+                - src/nodeio_serve/app.py
+                - src/nodeio_serve/grpc.py
+                - Dockerfile
+            verification:
+              - sh scripts/check-ci-local.sh
+            guardrail_refs:
+              - PY-TEST-002
+          - id: SERVE-001-T2
+            status: open
+            title: Publish to PyPI with a trusted publisher
+            instructions:
+              files:
+                - .github/workflows/publish-pypi.yml
+            verification:
+              - Pending publisher for NjordLabs/nodeio-serve, workflow .github/workflows/publish-pypi.yml, environment pypi
+            guardrail_refs:
+              - PY-TEST-002
