@@ -87,8 +87,12 @@ repos:
     rev: v1.20.2
     hooks:
       - id: mypy
-        additional_dependencies: [pydantic==2.13.3]
-        args: [--config-file=pyproject.toml, -p, pymjolnir, -p, tests]
+        additional_dependencies:
+          - fastapi>=0.115
+          - grpcio>=1.85.3
+          - protobuf>=7.35.1
+          - uvicorn>=0.32
+        args: [--config-file=pyproject.toml, -p, nodeio_serve, -p, tests]
         pass_filenames: false
         always_run: true
   - repo: https://github.com/HunterMcGushion/docstr_coverage

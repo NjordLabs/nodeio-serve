@@ -1,11 +1,10 @@
-"""JSON conversions kept out of the typed modules.
-
-A sibling ``codec.pyi`` is what type checkers read.
-"""
+"""JSON conversions kept out of the request handlers."""
 
 from __future__ import annotations
 
 import json
+
+from nodeio_serve.scripts.jsonio import loads
 
 
 def object_from_json(payload: bytes | str) -> dict[str, object]:
@@ -20,7 +19,7 @@ def object_from_json(payload: bytes | str) -> dict[str, object]:
     Raises:
         ValueError: ``payload`` is not a JSON object.
     """
-    parsed = json.loads(payload)
+    parsed = loads(payload)
     if not isinstance(parsed, dict):
         raise ValueError("body must be an object")
     return {str(key): value for key, value in parsed.items()}
@@ -34,6 +33,12 @@ def json_from_object(payload: dict[str, object]) -> bytes:
 
     Returns:
         The encoded bytes.
+
+    Raises:
+        ValueError: ``payload`` is not JSON-serializable.
     """
-    encoded = json.dumps(payload)
+    try:
+        encoded = json.dumps(payload)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("result is not JSON") from exc
     return encoded.encode()

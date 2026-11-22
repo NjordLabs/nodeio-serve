@@ -8,10 +8,10 @@ nodeio graph when that is what should run.
 The package is not on PyPI. Install the wheel from the GitHub Release:
 
 ```bash
-pip install https://github.com/NjordLabs/nodeio-serve/releases/download/v0.1.0/nodeio_serve-0.1.0-py3-none-any.whl
+pip install https://github.com/NjordLabs/nodeio-serve/releases/download/v0.2.0/nodeio_serve-0.2.0-py3-none-any.whl
 ```
 
-Requires Python 3.13.
+Requires Python 3.13 or 3.14.
 
 ```python
 from nodeio_serve import create_app
@@ -29,8 +29,18 @@ JSON object, rejects a body over the cap, and runs at most the
 configured number of requests at once.
 
 The gRPC method is `nodeio.v1.GraphService/Run`, defined in
-`proto/nodeio/v1/graph.proto`. `GraphServicer.run` takes the request
-body as bytes and returns JSON bytes. It is not a generated stub.
+`proto/nodeio/v1/graph.proto`. The servicer is generated. It needs the
+`grpc` extra (`grpcio` and `protobuf`). The default install and the
+example image do not include it.
+
+```python
+from nodeio_serve import create_ingress
+
+app, servicer = create_ingress(echo)
+```
+
+`create_ingress` returns the HTTP application and the servicer. They
+share one concurrency limit and the same body cap.
 
 The container image is an example. It is not published. Build it from
 this repository:

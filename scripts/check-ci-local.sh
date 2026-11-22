@@ -6,7 +6,7 @@ set -eu
 ROOT="$(CDPATH='' cd -- "$(dirname "$0")/.." && pwd)"
 cd "${ROOT}"
 
-uv sync --frozen --extra dev
+uv sync --frozen --extra dev --extra grpc
 uv run ruff check src tests
 uv run ruff format --check src tests
 uv run mypy -p nodeio_serve -p tests
@@ -17,3 +17,7 @@ uv run bandit -c pyproject.toml -r src -q
 uv run interrogate --fail-under 95 src
 sh scripts/check-submodule-pins.sh
 sh scripts/check-threshold-drift.sh
+exported="$(mktemp)"
+uv export --frozen --no-dev --no-emit-project --no-header -o "${exported}" >/dev/null
+diff -u requirements.txt "${exported}"
+rm -f "${exported}"
