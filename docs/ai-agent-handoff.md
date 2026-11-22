@@ -31,5 +31,6 @@ Point the injected handler at a nodeio `run` once nodeio is released.
 ## Recent history
 
 - feat(ingress): add HTTP and gRPC run endpoints
+- fix(quality): decode JSON behind a stub and cover the echo entrypoint
 
 *Last updated: 2026-11-22.*

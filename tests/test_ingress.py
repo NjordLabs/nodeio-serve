@@ -10,6 +10,7 @@ import httpx
 import pytest
 
 from nodeio_serve import GraphServicer, create_app
+from nodeio_serve.__main__ import echo
 from nodeio_serve.grpc import RequestTooLarge
 
 
@@ -25,7 +26,9 @@ def test_health_and_run() -> None:
     async def call() -> None:
         """Run this step."""
         transport = httpx.ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://test"
+        ) as client:
             health = await client.get("/health")
             ran = await client.post("/v1/run", json={"n": 1})
         assert health.json() == {"status": "ok"}
@@ -41,7 +44,9 @@ def test_rejects_a_large_body_and_a_list() -> None:
     async def call() -> None:
         """Run this step."""
         transport = httpx.ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://test"
+        ) as client:
             large = await client.post("/v1/run", content=b"0123456789")
             listed = await client.post("/v1/run", json=[1])
         assert large.status_code == 413
@@ -69,7 +74,9 @@ def test_limit_holds_the_second_call() -> None:
     async def call() -> None:
         """Run this step."""
         transport = httpx.ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://test"
+        ) as client:
             first = asyncio.create_task(client.post("/v1/run", json={"n": 1}))
             await started.wait()
             second = asyncio.create_task(client.post("/v1/run", json={"n": 2}))
@@ -98,6 +105,11 @@ def test_grpc_run_caps_the_payload() -> None:
     asyncio.run(call())
     with pytest.raises(ValueError):
         GraphServicer(_echo, max_bytes=0)
+
+
+def test_echo_returns_its_argument() -> None:
+    """The process entrypoint handler returns the object it was given."""
+    assert asyncio.run(echo({"n": 1})) == {"n": 1}
 
 
 def test_module_entrypoint(monkeypatch: pytest.MonkeyPatch) -> None:

@@ -30,6 +30,7 @@ dev = [
   "mypy>=1.20.2",
   "pylint>=3.0",
   "pytest>=8.0",
+  "pytest-cov>=6.0",
   "ruff==0.15.12",
 ]
 
@@ -56,7 +57,7 @@ ignore-semiprivate = true
 
 [tool.mypy]
 disallow_untyped_defs = true
-exclude = ["(^|/)docs/", "(^|/)\\.github/", "(^|/)scripts/"]
+exclude = ["(^|/)docs/", "(^|/)\\.github/", "(^|/)scripts/", "(^|/)tests/"]
 explicit_package_bases = true
 mypy_path = ["src"]
 namespace_packages = true
@@ -79,7 +80,7 @@ disable = [
 ]
 
 [tool.ruff]
-line-length = 100
+line-length = 88
 target-version = "py313"
 
 [tool.ruff.lint]
