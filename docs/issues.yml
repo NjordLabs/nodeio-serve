@@ -28,7 +28,7 @@ milestones:
           - PY-TEST-002
         tasks:
           - id: SERVE-001-T1
-            status: open
+            status: done
             title: Implement the ingress and the example image
             instructions:
               files:
@@ -50,7 +50,7 @@ milestones:
             guardrail_refs:
               - PY-TEST-002
           - id: SERVE-001-T3
-            status: open
+            status: done
             title: Run the test job on Python 3.14
             instructions:
               files:
@@ -60,7 +60,7 @@ milestones:
             guardrail_refs:
               - PY-TEST-002
           - id: SERVE-001-T4
-            status: open
+            status: done
             title: Add a repo-level container CI script
             instructions:
               files:
@@ -70,7 +70,7 @@ milestones:
             guardrail_refs:
               - PY-TEST-002
       - id: SERVE-002
-        status: open
+        status: done
         title: Serve the run method from a generated stub
         overview:
           problem: >-
@@ -79,15 +79,15 @@ milestones:
           goal: >-
             A generated grpcio.aio server implements the same Run method.
         decision: >-
-          In the context of the first ingress, facing a missing
-          generator, we decided to ship the hand-written servicer and
-          record the generated server as follow-up, to achieve a
-          releasable image now, accepting that the stub is not generated.
+          In the context of the first ingress, facing a hand-written
+          servicer, we decided to generate the grpcio.aio server from
+          the proto and share the HTTP concurrency limit, to achieve
+          one Run method, accepting an optional grpc extra.
         guardrail_refs:
           - PY-TEST-002
         tasks:
           - id: SERVE-002-T1
-            status: open
+            status: done
             title: Generate the grpcio.aio server from the proto
             instructions:
               files:
