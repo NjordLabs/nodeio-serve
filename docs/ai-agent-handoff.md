@@ -4,8 +4,8 @@
 
 `nodeio-serve` is the HTTP and gRPC ingress. Python 3.13 and 3.14.
 Public repository `NjordLabs/nodeio-serve`. The image is an example
-and is not published. `v0.2.0` is the GitHub Release:
-https://github.com/NjordLabs/nodeio-serve/releases/tag/v0.2.0
+and is not published. [`v0.2.0`](https://github.com/NjordLabs/nodeio-serve/releases/tag/v0.2.0)
+is the GitHub Release.
 The wheel sha256 is
 `7efbda50dd22e16160f62863de29a66c0074eaf453d6ab69c90327ff76261908`.
 
