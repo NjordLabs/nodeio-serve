@@ -53,6 +53,11 @@ def test_module_entrypoint(monkeypatch: pytest.MonkeyPatch) -> None:
     runpy.run_module("nodeio_serve", run_name="__main__")
 
 
+def test_package_loads_the_servicer() -> None:
+    """The package root imports the servicer only when asked."""
+    assert nodeio_serve.GraphServicer.__name__ == "GraphServicer"
+
+
 def test_unknown_export() -> None:
     """The package root only lazy-loads the servicer name."""
     with pytest.raises(AttributeError):
