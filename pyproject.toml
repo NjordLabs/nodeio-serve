@@ -37,7 +37,7 @@ dev = [
 Repository = "https://github.com/NjordLabs/nodeio-serve"
 
 [tool.bandit]
-exclude_dirs = [".venv", "build", "dist", "tests"]
+exclude_dirs = [".venv", "build", "dist", "tests", "scripts", "docs", ".github"]
 
 [tool.coverage.run]
 branch = true
@@ -49,10 +49,14 @@ show_missing = true
 
 [tool.interrogate]
 fail-under = 95
+ignore-nested-classes = true
 ignore-nested-functions = true
+ignore-private = true
+ignore-semiprivate = true
 
 [tool.mypy]
 disallow_untyped_defs = true
+exclude = ["(^|/)docs/", "(^|/)\\.github/", "(^|/)scripts/"]
 explicit_package_bases = true
 mypy_path = ["src"]
 namespace_packages = true
@@ -82,7 +86,7 @@ target-version = "py313"
 select = ["D", "E", "F", "I"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["D"]
+"tests/**" = ["D", "DOC"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
