@@ -57,7 +57,7 @@ ignore-semiprivate = true
 
 [tool.mypy]
 disallow_untyped_defs = true
-exclude = ["(^|/)docs/", "(^|/)\\.github/", "(^|/)scripts/"]
+exclude = ["(^|/)docs/", "(^|/)\\.github/", "(^|/)scripts/", "(^|/)tests/"]
 explicit_package_bases = true
 mypy_path = ["src"]
 namespace_packages = true

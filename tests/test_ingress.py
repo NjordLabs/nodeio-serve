@@ -100,6 +100,13 @@ def test_grpc_run_caps_the_payload() -> None:
         GraphServicer(_echo, max_bytes=0)
 
 
+def test_echo_returns_its_argument() -> None:
+    """The process entrypoint handler returns the object it was given."""
+    from nodeio_serve.__main__ import echo
+
+    assert asyncio.run(echo({"n": 1})) == {"n": 1}
+
+
 def test_module_entrypoint(monkeypatch: pytest.MonkeyPatch) -> None:
     """Run this step."""
     monkeypatch.setattr("uvicorn.run", lambda *args, **kwargs: None)

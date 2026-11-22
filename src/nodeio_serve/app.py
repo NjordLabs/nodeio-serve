@@ -11,6 +11,8 @@ from collections.abc import Awaitable, Callable
 
 from fastapi import FastAPI, HTTPException, Request
 
+from nodeio_serve.codec import object_from_json
+
 Handler = Callable[[dict[str, object]], Awaitable[dict[str, object]]]
 
 
@@ -63,10 +65,15 @@ def create_app(
         body = await request.body()
         if len(body) > max_bytes:
             raise HTTPException(status_code=413, detail="request exceeds max_bytes")
-        payload = await request.json()
-        if not isinstance(payload, dict):
-            raise HTTPException(status_code=422, detail="body must be an object")
+        payload = _object(body)
         async with semaphore:
             return await handler(payload)
 
     return application
+
+
+def _object(body: bytes) -> dict[str, object]:
+    try:
+        return object_from_json(body)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="body must be an object") from exc

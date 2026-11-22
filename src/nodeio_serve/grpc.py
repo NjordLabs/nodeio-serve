@@ -7,8 +7,9 @@ A caller passes the request payload bytes.
 from __future__ import annotations
 
 import asyncio
-import json
 from collections.abc import Awaitable, Callable
+
+from nodeio_serve.codec import json_from_object, object_from_json
 
 Handler = Callable[[dict[str, object]], Awaitable[dict[str, object]]]
 
@@ -56,9 +57,7 @@ class GraphServicer:
         """
         if len(payload) > self._max_bytes:
             raise RequestTooLarge("request exceeds max_bytes")
-        parsed = json.loads(payload)
-        if not isinstance(parsed, dict):
-            raise ValueError("body must be an object")
+        parsed = object_from_json(payload)
         async with self._semaphore:
             result = await self._handler(parsed)
-        return json.dumps(result).encode()
+        return json_from_object(result)
