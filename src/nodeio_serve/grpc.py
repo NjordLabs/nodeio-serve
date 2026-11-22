@@ -25,7 +25,9 @@ class GraphServicer:
     without a server.
     """
 
-    def __init__(self, handler: Handler, *, max_bytes: int = 1_000_000, limit: int = 4) -> None:
+    def __init__(
+        self, handler: Handler, *, max_bytes: int = 1_000_000, limit: int = 4
+    ) -> None:
         """Store the handler and the caps.
 
         Args:

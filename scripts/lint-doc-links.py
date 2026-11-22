@@ -257,9 +257,8 @@ def check_file(md_file: Path, root: Path) -> list[str]:
         path_only = path_from_destination(raw)
         if path_only is None:
             continue
-        if any(
-            target_ok(candidate) for candidate in candidate_targets(md_file, path_only, root)
-        ):
+        candidates = candidate_targets(md_file, path_only, root)
+        if any(target_ok(candidate) for candidate in candidates):
             continue
         target = (md_file.parent / path_only).resolve()
         if is_repo_relative(path_only):
