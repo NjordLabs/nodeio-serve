@@ -4,7 +4,10 @@
 
 `nodeio-serve` is the HTTP and gRPC ingress. Python 3.13 and 3.14.
 Public repository `NjordLabs/nodeio-serve`. The image is an example
-and is not published. Version 0.2.0.
+and is not published. [`v0.2.0`](https://github.com/NjordLabs/nodeio-serve/releases/tag/v0.2.0)
+is the GitHub Release.
+The wheel sha256 is
+`7efbda50dd22e16160f62863de29a66c0074eaf453d6ab69c90327ff76261908`.
 
 ## Scope
 
@@ -37,9 +40,12 @@ path.
 
 ## Known pitfalls
 
-`v0.2.0` is the branch tip. It is not tagged. The container workflow
-sets `push_handoff: false` and `scan_local: true`. The example image
-is not published.
+The container workflow sets `push_handoff: false` and
+`scan_local: true`. The example image is not published. The lint job
+sets `run_infra_lint: false` and `run_secrets_scan: false` because
+those jobs pull private `ghcr.io/pirlruc/ci-lint`, which this
+repository's token cannot read. Dockerfile lint and the build still
+run.
 
 `container-lint.yml` exists at the same containerdevops pin the build
 caller uses (`4d5c00e20786811f740b70ee9d46832fc979f126`). Docker
@@ -65,5 +71,6 @@ unpublished.
 - feat(ingress): cap bodies before buffering and serve generated Run
 - ci: hash-lock the image and pin the quality workflows
 - docs: record 0.2.0
+- release: tag v0.2.0
 
 *Last updated: 2026-11-22.*
