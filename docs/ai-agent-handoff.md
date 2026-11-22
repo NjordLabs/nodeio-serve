@@ -20,17 +20,19 @@ docker build -t nodeio-serve:local .
 
 ## Known pitfalls
 
-Quality jobs pull a private `ci-lint` image and stay red until
-`GHCR_READ_TOKEN` can read it. The container workflow sets
-`push_handoff: false` and `scan_local: true`.
+`v0.1.0` is released. The container workflow sets
+`push_handoff: false` and `scan_local: true`. The example image is
+not published.
 
 ## Suggested next work
 
-Point the injected handler at a nodeio `run` once nodeio is released.
+PyPI publish stays open. nodeio `v0.2.0` is released. The example
+image stays unpublished.
 
 ## Recent history
 
 - feat(ingress): add HTTP and gRPC run endpoints
 - fix(quality): decode JSON behind a stub and cover the echo entrypoint
+- docs(readme): install from the v0.1.0 git tag
 
 *Last updated: 2026-11-22.*
