@@ -4,7 +4,7 @@ requires = ["setuptools>=82.0.1", "wheel>=0.47.0"]
 
 [project]
 name = "nodeio-serve"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
   "fastapi>=0.115",
   "uvicorn>=0.32",
@@ -14,6 +14,7 @@ authors = [{name = "pirlruc"}]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
 ]
 description = "HTTP and gRPC ingress for a nodeio graph"
@@ -33,15 +34,29 @@ dev = [
   "pytest-cov>=6.0",
   "ruff==0.15.12",
 ]
+grpc = [
+  "grpcio>=1.85.3",
+  "protobuf>=7.35.1",
+]
 
 [project.urls]
 Repository = "https://github.com/NjordLabs/nodeio-serve"
 
 [tool.bandit]
-exclude_dirs = [".venv", "build", "dist", "tests", "scripts", "docs", ".github"]
+exclude_dirs = [
+  ".github",
+  ".venv",
+  "build",
+  "dist",
+  "docs",
+  "scripts",
+  "src/nodeio_serve/gen",
+  "tests",
+]
 
 [tool.coverage.run]
 branch = true
+omit = ["*/nodeio_serve/gen/*"]
 source = ["nodeio_serve"]
 
 [tool.coverage.report]
@@ -49,6 +64,7 @@ fail_under = 95
 show_missing = true
 
 [tool.interrogate]
+exclude = ["src/nodeio_serve/gen"]
 fail-under = 95
 ignore-nested-classes = true
 ignore-nested-functions = true
@@ -62,15 +78,26 @@ explicit_package_bases = true
 mypy_path = ["src"]
 namespace_packages = true
 python_version = "3.13"
+strict = true
 
 [[tool.mypy.overrides]]
 disallow_untyped_defs = false
 module = "tests.*"
 
+[[tool.mypy.overrides]]
+ignore_errors = true
+module = "nodeio_serve.gen.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = ["grpc", "grpc.*"]
+
 [tool.pylint.format]
 max-line-length = 100
 
 [tool.pylint.main]
+ignore-paths = ["^src/nodeio_serve/gen/"]
+ignore-patterns = ["\\.pyi$"]
 py-version = "3.13"
 source-roots = ["src"]
 
@@ -80,6 +107,7 @@ disable = [
 ]
 
 [tool.ruff]
+extend-exclude = ["src/nodeio_serve/gen"]
 line-length = 88
 target-version = "py313"
 

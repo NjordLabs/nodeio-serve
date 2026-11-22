@@ -3,15 +3,15 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import runpy
 
 import httpx
 import pytest
+from fastapi import HTTPException
 
-from nodeio_serve import GraphServicer, create_app
-from nodeio_serve.__main__ import echo
-from nodeio_serve.grpc import RequestTooLarge
+from nodeio_serve import create_app, create_ingress
+from nodeio_serve.__main__ import echo, serve_config
+from nodeio_serve.app import _lifespan, _reject_large
 
 
 async def _echo(payload: dict[str, object]) -> dict[str, object]:
@@ -39,7 +39,15 @@ def test_health_and_run() -> None:
 
 def test_rejects_a_large_body_and_a_list() -> None:
     """Run this step."""
-    app = create_app(_echo, max_bytes=8)
+    seen = False
+
+    async def handler(payload: dict[str, object]) -> dict[str, object]:
+        """Run this step."""
+        nonlocal seen
+        seen = True
+        return {"echo": payload["n"]}
+
+    app = create_app(handler, max_bytes=8)
 
     async def call() -> None:
         """Run this step."""
@@ -51,10 +59,42 @@ def test_rejects_a_large_body_and_a_list() -> None:
             listed = await client.post("/v1/run", json=[1])
         assert large.status_code == 413
         assert listed.status_code == 422
+        assert seen is False
 
     asyncio.run(call())
+    with pytest.raises(HTTPException) as caught:
+        _reject_large(b"0123456789", 8)
+    assert caught.value.status_code == 413
     with pytest.raises(ValueError):
         create_app(_echo, limit=0)
+    with pytest.raises(ValueError):
+        create_app(_echo, max_bytes=0)
+    with pytest.raises(ValueError):
+        create_ingress(_echo, limit=0)
+
+
+def test_non_json_result_is_an_error() -> None:
+    """A value the codec cannot encode becomes an error response."""
+
+    async def handler(payload: dict[str, object]) -> dict[str, object]:
+        """Run this step."""
+        del payload
+        return {"bad": object()}
+
+    app = create_app(handler)
+
+    async def call() -> None:
+        """Run this step."""
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://test"
+        ) as client:
+            response = await client.post("/v1/run", json={"n": 1})
+        assert response.status_code == 500
+        assert response.json()["detail"] == "result is not JSON"
+        assert "Traceback" not in response.text
+
+    asyncio.run(call())
 
 
 def test_limit_holds_the_second_call() -> None:
@@ -89,30 +129,39 @@ def test_limit_holds_the_second_call() -> None:
     asyncio.run(call())
 
 
-def test_grpc_run_caps_the_payload() -> None:
-    """Run this step."""
-    servicer = GraphServicer(_echo, max_bytes=8)
-
-    async def call() -> None:
-        """Run this step."""
-        result = await servicer.run(json.dumps({"n": 2}).encode())
-        assert json.loads(result) == {"echo": 2}
-        with pytest.raises(RequestTooLarge):
-            await servicer.run(b"0123456789")
-        with pytest.raises(ValueError):
-            await servicer.run(b"[1]")
-
-    asyncio.run(call())
-    with pytest.raises(ValueError):
-        GraphServicer(_echo, max_bytes=0)
-
-
 def test_echo_returns_its_argument() -> None:
     """The process entrypoint handler returns the object it was given."""
     assert asyncio.run(echo({"n": 1})) == {"n": 1}
 
 
+def test_lifespan_yields_without_cancelling() -> None:
+    """The application lifespan does not cancel the caller."""
+    app = create_app(_echo)
+
+    async def call() -> None:
+        """Run this step."""
+        async with _lifespan(app):
+            assert app.state.run_semaphore.locked() is False
+
+    asyncio.run(call())
+
+
+def test_serve_config_sets_graceful_shutdown() -> None:
+    """The process config sets the shutdown timeout without listening."""
+    config = serve_config()
+    assert config.timeout_graceful_shutdown == 30
+    assert config.lifespan == "on"
+
+
 def test_module_entrypoint(monkeypatch: pytest.MonkeyPatch) -> None:
     """Run this step."""
-    monkeypatch.setattr("uvicorn.run", lambda *args, **kwargs: None)
+    monkeypatch.setattr("uvicorn.Server.run", lambda self: None)
     runpy.run_module("nodeio_serve", run_name="__main__")
+
+
+def test_unknown_export() -> None:
+    """The package root only lazy-loads the servicer name."""
+    import nodeio_serve
+
+    with pytest.raises(AttributeError):
+        getattr(nodeio_serve, "missing")

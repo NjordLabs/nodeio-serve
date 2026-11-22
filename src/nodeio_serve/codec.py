@@ -1,7 +1,4 @@
-"""JSON conversions kept out of the typed modules.
-
-A sibling ``codec.pyi`` is what type checkers read.
-"""
+"""JSON conversions kept out of the request handlers."""
 
 from __future__ import annotations
 
@@ -34,6 +31,12 @@ def json_from_object(payload: dict[str, object]) -> bytes:
 
     Returns:
         The encoded bytes.
+
+    Raises:
+        ValueError: ``payload`` is not JSON-serializable.
     """
-    encoded = json.dumps(payload)
+    try:
+        encoded = json.dumps(payload)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("result is not JSON") from exc
     return encoded.encode()

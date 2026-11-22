@@ -1,0 +1,15 @@
+"""Types for the generated gRPC client and server."""
+
+import grpc.aio
+
+from nodeio_serve.gen.nodeio.v1.graph_pb2 import RunRequest, RunResponse
+
+class GraphServiceStub:
+    def __init__(self, channel: grpc.aio.Channel) -> None: ...
+    Run: grpc.aio.UnaryUnaryMultiCallable[RunRequest, RunResponse]
+
+class GraphServiceServicer: ...
+
+def add_GraphServiceServicer_to_server(
+    servicer: GraphServiceServicer, server: grpc.aio.Server
+) -> None: ...
