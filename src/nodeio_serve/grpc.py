@@ -14,7 +14,7 @@ import grpc.aio
 from nodeio_serve.app import Handler
 from nodeio_serve.bounds import require_caps
 from nodeio_serve.codec import json_from_object, object_from_json
-from nodeio_serve.gen.nodeio.v1 import graph_pb2, graph_pb2_grpc
+from nodeio_serve.scripts.gen.nodeio.v1 import graph_pb2, graph_pb2_grpc
 
 _RECEIVE_CAP = "grpc.max_receive_message_length"
 
@@ -102,6 +102,18 @@ class GraphServicer(graph_pb2_grpc.GraphServiceServicer):
         except ValueError:
             await _abort(context, grpc.StatusCode.INTERNAL, "result is not JSON")
         return graph_pb2.RunResponse(payload=encoded)  # pylint: disable=no-member
+
+
+def run_request(payload: bytes) -> graph_pb2.RunRequest:
+    """Build a Run request.
+
+    Args:
+        payload: JSON bytes.
+
+    Returns:
+        The generated request.
+    """
+    return graph_pb2.RunRequest(payload=payload)  # pylint: disable=no-member
 
 
 def receive_cap_option(max_bytes: int) -> tuple[str, int]:

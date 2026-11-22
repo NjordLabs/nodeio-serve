@@ -16,6 +16,7 @@ from fastapi.responses import Response
 
 from nodeio_serve.bounds import require_caps
 from nodeio_serve.codec import json_from_object, object_from_json
+from nodeio_serve.scripts.state import remember
 
 Handler = Callable[[dict[str, object]], Awaitable[dict[str, object]]]
 
@@ -56,7 +57,7 @@ def create_app(
     require_caps(max_bytes, limit)
     gate = asyncio.Semaphore(limit) if semaphore is None else semaphore
     application = FastAPI(max_body_size=max_bytes, lifespan=_lifespan)
-    application.state.run_semaphore = gate
+    remember(application, gate)
 
     @application.get("/health")
     async def health() -> Response:

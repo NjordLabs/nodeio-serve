@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 
+from nodeio_serve.scripts.jsonio import loads
+
 
 def object_from_json(payload: bytes | str) -> dict[str, object]:
     """Decode a JSON object.
@@ -17,7 +19,7 @@ def object_from_json(payload: bytes | str) -> dict[str, object]:
     Raises:
         ValueError: ``payload`` is not a JSON object.
     """
-    parsed = json.loads(payload)
+    parsed = loads(payload)
     if not isinstance(parsed, dict):
         raise ValueError("body must be an object")
     return {str(key): value for key, value in parsed.items()}

@@ -50,13 +50,13 @@ exclude_dirs = [
   "dist",
   "docs",
   "scripts",
-  "src/nodeio_serve/gen",
+  "src/nodeio_serve/scripts",
   "tests",
 ]
 
 [tool.coverage.run]
 branch = true
-omit = ["*/nodeio_serve/gen/*"]
+omit = ["*/nodeio_serve/scripts/*"]
 source = ["nodeio_serve"]
 
 [tool.coverage.report]
@@ -64,7 +64,7 @@ fail_under = 95
 show_missing = true
 
 [tool.interrogate]
-exclude = ["src/nodeio_serve/gen"]
+exclude = ["src/nodeio_serve/scripts"]
 fail-under = 95
 ignore-nested-classes = true
 ignore-nested-functions = true
@@ -73,9 +73,9 @@ ignore-semiprivate = true
 
 [tool.mypy]
 disallow_untyped_defs = true
-exclude = ["(^|/)docs/", "(^|/)\\.github/", "(^|/)scripts/", "(^|/)tests/"]
+exclude = ["(^|/)docs/", "(^|/)\\.github/", "^scripts/", "(^|/)tests/"]
 explicit_package_bases = true
-mypy_path = ["src"]
+mypy_path = ["src", "typings"]
 namespace_packages = true
 python_version = "3.13"
 strict = true
@@ -86,7 +86,7 @@ module = "tests.*"
 
 [[tool.mypy.overrides]]
 ignore_errors = true
-module = "nodeio_serve.gen.*"
+module = "nodeio_serve.scripts.*"
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
@@ -96,7 +96,7 @@ module = ["grpc", "grpc.*"]
 max-line-length = 100
 
 [tool.pylint.main]
-ignore-paths = ["^src/nodeio_serve/gen/"]
+ignore-paths = ["^src/nodeio_serve/scripts/"]
 ignore-patterns = ["\\.pyi$"]
 py-version = "3.13"
 source-roots = ["src"]
@@ -107,7 +107,7 @@ disable = [
 ]
 
 [tool.ruff]
-extend-exclude = ["src/nodeio_serve/gen"]
+extend-exclude = ["src/nodeio_serve/scripts"]
 line-length = 88
 target-version = "py313"
 

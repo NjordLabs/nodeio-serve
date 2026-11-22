@@ -33,3 +33,8 @@ jobs:
     with:
       scripts_ref: 4d5c00e20786811f740b70ee9d46832fc979f126
       blocking: true
+      # Nested infra and secrets jobs pull private ghcr.io/pirlruc/ci-lint.
+      # This repo's token cannot read that package. Dockerfile lint still runs.
+      # Secret scanning stays on the quality workflow.
+      run_infra_lint: false
+      run_secrets_scan: false
