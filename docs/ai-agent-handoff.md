@@ -64,7 +64,8 @@ local CI diff is the check.
 ## Suggested next work
 
 PyPI publish stays open (`SERVE-001-T2`). The example image stays
-unpublished.
+unpublished. `SERVE-003` passes `GHCR_READ_TOKEN` into container lint
+after containerdevops `CDO-GHCR-001` forwards that secret.
 
 ## Recent history
 
@@ -73,4 +74,4 @@ unpublished.
 - docs: record 0.2.0
 - release: tag v0.2.0
 
-*Last updated: 2026-11-22.*
+*Last updated: 2026-11-23.*

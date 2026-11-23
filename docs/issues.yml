@@ -97,3 +97,41 @@ milestones:
               - sh scripts/check-ci-local.sh
             guardrail_refs:
               - PY-TEST-002
+      - id: SERVE-003
+        status: open
+        title: Pass GHCR_READ_TOKEN into container lint
+        overview:
+          problem: >-
+            The Quality workflow already logs in to GHCR with
+            GHCR_READ_TOKEN. The Container workflow does not. Its lint job
+            turns off infra lint and the secrets scan because those jobs
+            pull private ghcr.io/pirlruc/ci-lint with github.token.
+          goal: >-
+            Once container-lint.yml forwards a registry login, the Container
+            workflow passes GHCR_READ_TOKEN and runs both scans.
+        decision: >-
+          In the context of the example image, facing scans left off for a
+          private ci-lint pull, we decided to pass the existing
+          GHCR_READ_TOKEN as container_token with username pirlruc, to
+          achieve the same pull the Quality job already makes, accepting
+          that a Dependabot run still skips the secret.
+        acceptance_criteria:
+          - container.yml passes container_username pirlruc and GHCR_READ_TOKEN
+          - run_infra_lint and run_secrets_scan are on
+          - The containerdevops pin is one that forwards container_token
+        guardrail_refs:
+          - CI-028
+          - CI-024
+        tasks:
+          - id: SERVE-003-T1
+            status: open
+            title: Send GHCR_READ_TOKEN from the container lint job
+            instructions:
+              files:
+                - .github/workflows/container.yml
+            verification:
+              - rg -n "GHCR_READ_TOKEN" .github/workflows/container.yml
+              - "! rg -n 'run_infra_lint: false' .github/workflows/container.yml"
+            guardrail_refs:
+              - CI-028
+              - CI-024
