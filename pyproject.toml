@@ -55,13 +55,13 @@ exclude_dirs = [
   "dist",
   "docs",
   "scripts",
-  "src/nodeio_serve/scripts",
+  "src/nodeio_serve/_gen",
   "tests",
 ]
 
 [tool.coverage.run]
 branch = true
-omit = ["*/nodeio_serve/scripts/*"]
+omit = ["*/nodeio_serve/_gen/*"]
 source = ["nodeio_serve"]
 
 [tool.coverage.report]
@@ -69,7 +69,7 @@ fail_under = 95
 show_missing = true
 
 [tool.interrogate]
-exclude = ["src/nodeio_serve/scripts"]
+exclude = ["src/nodeio_serve/_gen"]
 fail-under = 95
 ignore-nested-classes = true
 ignore-nested-functions = true
@@ -91,7 +91,7 @@ module = "tests.*"
 
 [[tool.mypy.overrides]]
 ignore_errors = true
-module = "nodeio_serve.scripts.*"
+module = "nodeio_serve._gen.*"
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
@@ -109,7 +109,7 @@ module = "tests.test_codec_properties"
 max-line-length = 100
 
 [tool.pylint.main]
-ignore-paths = ["^src/nodeio_serve/scripts/"]
+ignore-paths = ["^src/nodeio_serve/_gen/"]
 ignore-patterns = ["\\.pyi$"]
 py-version = "3.13"
 source-roots = ["src"]
@@ -120,7 +120,7 @@ disable = [
 ]
 
 [tool.ruff]
-extend-exclude = ["src/nodeio_serve/scripts"]
+extend-exclude = ["src/nodeio_serve/_gen"]
 line-length = 88
 target-version = "py313"
 

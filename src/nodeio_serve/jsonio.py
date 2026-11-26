@@ -1,4 +1,4 @@
-"""JSON helpers whose untyped edges stay out of the quality scan."""
+"""Decode JSON without narrowing the result."""
 
 import json
 

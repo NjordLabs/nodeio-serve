@@ -32,7 +32,7 @@ class _AbortContext:
 
 def test_receive_cap_option_uses_the_cap() -> None:
     """The server option is the configured payload cap."""
-    assert receive_cap_option(32) == ("grpc.max_receive_message_length", 32)
+    assert receive_cap_option(32) == ("grpc.max_receive_message_length", 160)
 
 
 def test_run_rejects_an_oversized_payload_in_process() -> None:

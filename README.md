@@ -49,13 +49,15 @@ this repository:
 docker build -t nodeio-serve:local .
 docker run --rm --read-only --cap-drop ALL \
   --security-opt no-new-privileges \
+  --tmpfs /tmp:rw,noexec,nosuid,size=64m \
   -p 127.0.0.1:8080:8080 nodeio-serve:local
 ```
 
-There is no `HEALTHCHECK` in the image. Use `GET /health`. The process
-listens on `127.0.0.1` unless `NODEIO_SERVE_HOST` is set. The example
-image sets that variable to `0.0.0.0` so the process is reachable on
-the container network. Publish the port on `127.0.0.1`.
+The image does not authenticate callers. There is no `HEALTHCHECK`.
+Use `GET /health`. The process listens on `127.0.0.1` unless
+`NODEIO_SERVE_HOST` is set. The example image sets that variable to
+`0.0.0.0` so the process is reachable on the container network.
+Publish the port on `127.0.0.1`.
 
 Source and issues:
 [NjordLabs/nodeio-serve](https://github.com/NjordLabs/nodeio-serve)

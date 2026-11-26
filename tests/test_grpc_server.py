@@ -11,8 +11,8 @@ import grpc
 import pytest
 
 from nodeio_serve import create_ingress
+from nodeio_serve._gen.nodeio.v1 import graph_pb2_grpc
 from nodeio_serve.grpc import GraphServicer, aio_server, run_request
-from nodeio_serve.scripts.gen.nodeio.v1 import graph_pb2_grpc
 from tests.support import asgi_client, holding_handler
 
 

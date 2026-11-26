@@ -29,6 +29,7 @@ jobs:
       docstring_format: Google
       python_version: "3.13"
       python_versions: '["3.13", "3.14"]'
+      generated_paths: src/nodeio_serve/_gen
       container_username: pirlruc
     secrets:
       checkout_token: ${{ secrets.PYDEVOPS_READ_TOKEN }}

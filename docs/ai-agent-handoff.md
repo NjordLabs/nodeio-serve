@@ -53,6 +53,8 @@ run.
 caller uses (`4d5c00e20786811f740b70ee9d46832fc979f126`). Docker
 Dependabot is in the `all-dependencies` group.
 
+Hand-written `jsonio` and `state` live in the package. Generated stubs live in `src/nodeio_serve/_gen` and are passed as `generated_paths`. The image does not authenticate callers.
+
 The generated stub requires `grpcio>=1.85.3` and `protobuf>=7.35.1`.
 `protobuf` is in the extra because the generated module imports it.
 The HTTP install does not.

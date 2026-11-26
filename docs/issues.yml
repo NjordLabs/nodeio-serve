@@ -69,6 +69,40 @@ milestones:
               - sh scripts/check-ci-docker.sh
             guardrail_refs:
               - PY-TEST-002
+      - id: LAYOUT-001
+        status: done
+        title: Keep hand-written modules in the scanned package
+        overview:
+          problem: >-
+            Hand-written modules lived under a directory the quality
+            tools skipped, next to generated stubs.
+          goal: >-
+            Hand-written code is scanned. Generated stubs are excluded
+            by an explicit path.
+        decision: >-
+          In the context of the ingress package, facing a skipped
+          directory, we decided to move hand-written modules into the
+          package and declare the generated tree, to achieve a real
+          scan, accepting a generated-path input.
+        acceptance_criteria:
+          - jsonio and state are package modules
+          - generated stubs live under _gen
+          - the quality workflow passes generated_paths
+        guardrail_refs:
+          - PY-TEST-002
+        tasks:
+          - id: LAYOUT-001-T1
+            status: done
+            title: Move modules and declare the generated path
+            instructions:
+              files:
+                - src/nodeio_serve/jsonio.py
+                - src/nodeio_serve/grpc.py
+                - .github/workflows/ci-quality.yml
+            verification:
+              - sh scripts/check-ci-local.sh
+            guardrail_refs:
+              - PY-TEST-002
       - id: PIN-001
         status: done
         title: Pin guardrails 1.17.1 and hash the container install

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from nodeio_serve.scripts.jsonio import loads
+from nodeio_serve.jsonio import loads
 
 
 def object_from_json(payload: bytes | str) -> dict[str, object]:

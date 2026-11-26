@@ -1,18 +1,9 @@
 """Property checks for the JSON codec.
 
 Hypothesis draws objects and the codec must return the same mapping.
-The module skips when hypothesis is not installed, which is the case
-inside the quality image.
 """
 
 from __future__ import annotations
-
-import importlib.util
-
-import pytest
-
-if importlib.util.find_spec("hypothesis") is None:
-    pytest.skip("hypothesis is not installed", allow_module_level=True)
 
 from hypothesis import given
 from hypothesis import strategies as st
