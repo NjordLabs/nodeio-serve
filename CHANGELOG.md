@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.3.0 - 2026-11-26
+
 - Hand-written modules sit in the package. Generated stubs sit in `_gen`.
 - The gRPC receive cap includes framing headroom. Abort does not return.
 - The example image has no authentication. The documented run adds a `/tmp` tmpfs.
+- Container lint receives `GHCR_READ_TOKEN` and runs the infra and secrets scans.
 
 ## 0.2.0 - 2026-11-22
 

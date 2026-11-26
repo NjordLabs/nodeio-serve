@@ -164,7 +164,7 @@ milestones:
             guardrail_refs:
               - PY-TEST-002
       - id: SERVE-003
-        status: open
+        status: done
         title: Pass GHCR_READ_TOKEN into container lint
         overview:
           problem: >-
@@ -190,7 +190,7 @@ milestones:
           - CI-024
         tasks:
           - id: SERVE-003-T1
-            status: open
+            status: done
             title: Send GHCR_READ_TOKEN from the container lint job
             instructions:
               files:

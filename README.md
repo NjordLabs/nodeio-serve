@@ -8,7 +8,7 @@ nodeio graph when that is what should run.
 The package is not on PyPI. Install the wheel from the GitHub Release:
 
 ```bash
-pip install https://github.com/NjordLabs/nodeio-serve/releases/download/v0.2.0/nodeio_serve-0.2.0-py3-none-any.whl
+pip install https://github.com/NjordLabs/nodeio-serve/releases/download/v0.3.0/nodeio_serve-0.3.0-py3-none-any.whl
 ```
 
 Requires Python 3.13 or 3.14.
