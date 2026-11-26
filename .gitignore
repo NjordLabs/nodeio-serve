@@ -208,3 +208,6 @@ __marimo__/
 
 # macOS
 .DS_Store
+
+# Host wheel used by the hashed container install
+.ci-wheels/

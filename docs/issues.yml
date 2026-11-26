@@ -69,6 +69,72 @@ milestones:
               - sh scripts/check-ci-docker.sh
             guardrail_refs:
               - PY-TEST-002
+      - id: LAYOUT-001
+        status: done
+        title: Keep hand-written modules in the scanned package
+        overview:
+          problem: >-
+            Hand-written modules lived under a directory the quality
+            tools skipped, next to generated stubs.
+          goal: >-
+            Hand-written code is scanned. Generated stubs are excluded
+            by an explicit path.
+        decision: >-
+          In the context of the ingress package, facing a skipped
+          directory, we decided to move hand-written modules into the
+          package and declare the generated tree, to achieve a real
+          scan, accepting a generated-path input.
+        acceptance_criteria:
+          - jsonio and state are package modules
+          - generated stubs live under _gen
+          - the quality workflow passes generated_paths
+        guardrail_refs:
+          - PY-TEST-002
+        tasks:
+          - id: LAYOUT-001-T1
+            status: done
+            title: Move modules and declare the generated path
+            instructions:
+              files:
+                - src/nodeio_serve/jsonio.py
+                - src/nodeio_serve/grpc.py
+                - .github/workflows/ci-quality.yml
+            verification:
+              - sh scripts/check-ci-local.sh
+            guardrail_refs:
+              - PY-TEST-002
+      - id: PIN-001
+        status: done
+        title: Pin guardrails 1.17.1 and hash the container install
+        overview:
+          problem: >-
+            The repository still cited guardrails 1.15.0, and the container
+            install did not pin dependency hashes.
+          goal: >-
+            Pins match the current org tags, dev tools live in a dependency
+            group, and the container install requires hashes.
+        decision: >-
+          In the context of the org quality bar, facing a stale pin, we
+          decided to move to guardrails 1.17.1 and hash the container
+          install, to achieve the current gates, accepting a lock refresh.
+        acceptance_criteria:
+          - docs/guardrails is 1.17.1 and .github/scaffold is 1.14.3
+          - Dev tools are a dependency group
+          - The container install uses --require-hashes
+        guardrail_refs:
+          - SC-DEP-008
+        tasks:
+          - id: PIN-001-T1
+            status: done
+            title: Bump the pins and hash the container install
+            instructions:
+              files:
+                - scripts/check-ci-docker.sh
+                - pyproject.toml
+            verification:
+              - sh scripts/check-ci-local.sh
+            guardrail_refs:
+              - SC-DEP-008
       - id: SERVE-002
         status: done
         title: Serve the run method from a generated stub

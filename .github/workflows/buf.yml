@@ -15,7 +15,7 @@ jobs:
   buf:
     permissions:
       contents: read
-    uses: pirlruc/commondevops/.github/workflows/common-buf.yml@0e78652fa9f65b9d98033ac82bf9e5308ebb17a7
+    uses: pirlruc/commondevops/.github/workflows/common-buf.yml@ff65e7efbb7eea67bd659f886db0adb399f3a3f5
     with:
-      scripts_ref: 0e78652fa9f65b9d98033ac82bf9e5308ebb17a7
+      scripts_ref: ff65e7efbb7eea67bd659f886db0adb399f3a3f5
       blocking: true
