@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Hand-written modules sit in the package. Generated stubs sit in `_gen`.
+- The gRPC receive cap includes framing headroom. Abort does not return.
+- The example image has no authentication. The documented run adds a `/tmp` tmpfs.
+
 ## 0.2.0 - 2026-11-22
 
 - The HTTP body cap is applied before the payload is buffered.

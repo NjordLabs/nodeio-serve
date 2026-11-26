@@ -16,4 +16,4 @@ jobs:
       contents: write
       id-token: write
       attestations: write
-    uses: pirlruc/pydevops/.github/workflows/python-release.yml@ce31af67d4b236e42298e9ba6f2984e60ab4ddff
+    uses: pirlruc/pydevops/.github/workflows/python-release.yml@fbb04bf8ddbe95819823c33174ebfecf21db9d26

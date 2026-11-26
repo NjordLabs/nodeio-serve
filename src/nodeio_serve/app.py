@@ -16,7 +16,7 @@ from fastapi.responses import Response
 
 from nodeio_serve.bounds import require_caps
 from nodeio_serve.codec import json_from_object, object_from_json
-from nodeio_serve.scripts.state import remember
+from nodeio_serve.state import remember
 
 Handler = Callable[[dict[str, object]], Awaitable[dict[str, object]]]
 

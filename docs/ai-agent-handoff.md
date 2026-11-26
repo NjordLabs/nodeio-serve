@@ -11,6 +11,8 @@ The wheel sha256 is
 
 ## Scope
 
+Pins: guardrails `1.17.1` (`8508e936`), scaffold `1.14.3` (`1fca8a3b`), pydevops `3.11.1` (`efef9824`), commondevops `v6.12.0` (`ff65e7ef`).
+
 `GET /health`, `POST /v1/run`, and generated `nodeio.v1.GraphService/Run`.
 The handler is injected. The engine stays in nodeio. The `grpc` extra
 (`grpcio`, `protobuf`) is optional. HTTP does not depend on it.
@@ -21,8 +23,8 @@ ingresses. Responses go through `nodeio_serve.codec`.
 
 ```bash
 sh scripts/check-ci-local.sh
-uv run --python 3.14 --extra dev --extra grpc pytest -q
-uv sync --frozen --extra dev --python 3.13
+uv run --python 3.14 --group dev --extra grpc pytest -q
+uv sync --frozen --group dev --extra grpc --python 3.13
 sh scripts/check-ci-docker.sh
 docker build -t nodeio-serve:local .
 ```
@@ -47,6 +49,8 @@ secrets scan can pull private `ghcr.io/pirlruc/ci-lint`.
 
 The build and lint callers pin containerdevops `6.10.0`
 (`b1cf0dead`). Docker Dependabot is in the `all-dependencies` group.
+
+Hand-written `jsonio` and `state` live in the package. Generated stubs live in `src/nodeio_serve/_gen` and are passed as `generated_paths`. The image does not authenticate callers.
 
 The generated stub requires `grpcio>=1.85.3` and `protobuf>=7.35.1`.
 `protobuf` is in the extra because the generated module imports it.

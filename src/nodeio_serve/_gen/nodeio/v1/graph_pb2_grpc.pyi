@@ -2,7 +2,7 @@
 
 import grpc.aio
 
-from nodeio_serve.scripts.gen.nodeio.v1.graph_pb2 import RunRequest, RunResponse
+from nodeio_serve._gen.nodeio.v1.graph_pb2 import RunRequest, RunResponse
 
 
 class GraphServiceStub:

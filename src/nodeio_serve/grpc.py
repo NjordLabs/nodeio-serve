@@ -7,16 +7,18 @@ does not import it.
 from __future__ import annotations
 
 import asyncio
+from typing import NoReturn
 
 import grpc
 import grpc.aio
 
+from nodeio_serve._gen.nodeio.v1 import graph_pb2, graph_pb2_grpc
 from nodeio_serve.app import Handler
 from nodeio_serve.bounds import require_caps
 from nodeio_serve.codec import json_from_object, object_from_json
-from nodeio_serve.scripts.gen.nodeio.v1 import graph_pb2, graph_pb2_grpc
 
 _RECEIVE_CAP = "grpc.max_receive_message_length"
+_FRAMING_HEADROOM = 128
 
 
 class GraphServicer(graph_pb2_grpc.GraphServiceServicer):
@@ -119,13 +121,16 @@ def run_request(payload: bytes) -> graph_pb2.RunRequest:
 def receive_cap_option(max_bytes: int) -> tuple[str, int]:
     """Return the gRPC option that enforces the payload cap.
 
+    The limit is the payload cap plus a small framing allowance. The
+    protobuf message is larger than the JSON bytes it carries.
+
     Args:
         max_bytes: Maximum payload size.
 
     Returns:
         The server option pair.
     """
-    return (_RECEIVE_CAP, max_bytes)
+    return (_RECEIVE_CAP, max_bytes + _FRAMING_HEADROOM)
 
 
 def aio_server(servicer: GraphServicer) -> grpc.aio.Server:
@@ -148,6 +153,13 @@ async def _abort(
     context: grpc.aio.ServicerContext[graph_pb2.RunRequest, graph_pb2.RunResponse],
     code: grpc.StatusCode,
     detail: str,
-) -> None:
+) -> NoReturn:
+    """End the call. This function does not return.
+
+    Args:
+        context: gRPC call context.
+        code: Status sent to the client.
+        detail: Short reason.
+    """
     await context.abort(code, detail)
     raise RuntimeError(detail)
