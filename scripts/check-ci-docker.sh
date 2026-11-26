@@ -25,6 +25,7 @@ WHEEL_DIR="${ROOT}/.ci-wheels"
 rm -rf "${WHEEL_DIR}"
 mkdir -p "${WHEEL_DIR}"
 trap 'rm -rf "${WHEEL_DIR}"' EXIT
+rm -rf build src/*.egg-info
 uv build --wheel --out-dir "${WHEEL_DIR}" >/dev/null
 wheel="$(find "${WHEEL_DIR}" -name '*.whl' -printf '%f\n')"
 hash="$(sha256sum "${WHEEL_DIR}/${wheel}" | awk '{print $1}')"
