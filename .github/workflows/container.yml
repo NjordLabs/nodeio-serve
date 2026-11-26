@@ -16,10 +16,10 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: pirlruc/containerdevops/.github/workflows/container-build.yml@4d5c00e20786811f740b70ee9d46832fc979f126
+    uses: pirlruc/containerdevops/.github/workflows/container-build.yml@b1cf0dead2b1a501bf1433fe72cdbbdad4e9132d # 6.10.0
     with:
       image_name: nodeio-serve:local
-      scripts_ref: 4d5c00e20786811f740b70ee9d46832fc979f126
+      scripts_ref: b1cf0dead2b1a501bf1433fe72cdbbdad4e9132d
       push_handoff: false
       scan_local: true
       image_title: nodeio-serve
@@ -29,12 +29,10 @@ jobs:
     permissions:
       contents: read
       packages: read
-    uses: pirlruc/containerdevops/.github/workflows/container-lint.yml@4d5c00e20786811f740b70ee9d46832fc979f126
+    uses: pirlruc/containerdevops/.github/workflows/container-lint.yml@b1cf0dead2b1a501bf1433fe72cdbbdad4e9132d # 6.10.0
     with:
-      scripts_ref: 4d5c00e20786811f740b70ee9d46832fc979f126
+      scripts_ref: b1cf0dead2b1a501bf1433fe72cdbbdad4e9132d
       blocking: true
-      # Nested infra and secrets jobs pull private ghcr.io/pirlruc/ci-lint.
-      # This repo's token cannot read that package. Dockerfile lint still runs.
-      # Secret scanning stays on the quality workflow.
-      run_infra_lint: false
-      run_secrets_scan: false
+      container_username: pirlruc
+    secrets:
+      container_token: ${{ secrets.GHCR_READ_TOKEN }}

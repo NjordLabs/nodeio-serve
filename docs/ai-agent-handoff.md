@@ -42,14 +42,11 @@ path.
 
 The container workflow sets `push_handoff: false` and
 `scan_local: true`. The example image is not published. The lint job
-sets `run_infra_lint: false` and `run_secrets_scan: false` because
-those jobs pull private `ghcr.io/pirlruc/ci-lint`, which this
-repository's token cannot read. Dockerfile lint and the build still
-run.
+passes `GHCR_READ_TOKEN` as `container_token` so infra lint and the
+secrets scan can pull private `ghcr.io/pirlruc/ci-lint`.
 
-`container-lint.yml` exists at the same containerdevops pin the build
-caller uses (`4d5c00e20786811f740b70ee9d46832fc979f126`). Docker
-Dependabot is in the `all-dependencies` group.
+The build and lint callers pin containerdevops `6.10.0`
+(`b1cf0dead`). Docker Dependabot is in the `all-dependencies` group.
 
 The generated stub requires `grpcio>=1.85.3` and `protobuf>=7.35.1`.
 `protobuf` is in the extra because the generated module imports it.
@@ -64,8 +61,7 @@ local CI diff is the check.
 ## Suggested next work
 
 PyPI publish stays open (`SERVE-001-T2`). The example image stays
-unpublished. `SERVE-003` passes `GHCR_READ_TOKEN` into container lint
-after containerdevops `CDO-GHCR-001` forwards that secret.
+unpublished. `SERVE-003` passes `GHCR_READ_TOKEN` into container lint.
 
 ## Recent history
 
@@ -74,4 +70,4 @@ after containerdevops `CDO-GHCR-001` forwards that secret.
 - docs: record 0.2.0
 - release: tag v0.2.0
 
-*Last updated: 2026-11-23.*
+*Last updated: 2026-11-26.*
