@@ -30,7 +30,7 @@ wheel="$(find "${WHEEL_DIR}" -name '*.whl' -printf '%f\n')"
 hash="$(sha256sum "${WHEEL_DIR}/${wheel}" | awk '{print $1}')"
 printf 'nodeio-serve @ file:///work/.ci-wheels/%s --hash=sha256:%s\n' "${wheel}" "${hash}" \
     >"${WHEEL_DIR}/requirements.txt"
-uv export --frozen --no-dev --extra grpc --group dev --no-emit-project --no-header --hashes \
+uv export --frozen --extra grpc --group dev --no-emit-project --no-header --hashes \
     >>"${WHEEL_DIR}/requirements.txt"
 
 echo "==> Quality gates in ${IMAGE}"
