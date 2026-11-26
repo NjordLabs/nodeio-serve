@@ -4,10 +4,10 @@
 
 `nodeio-serve` is the HTTP and gRPC ingress. Python 3.13 and 3.14.
 Public repository `NjordLabs/nodeio-serve`. The image is an example
-and is not published. [`v0.2.0`](https://github.com/NjordLabs/nodeio-serve/releases/tag/v0.2.0)
-is the GitHub Release.
-The wheel sha256 is
-`7efbda50dd22e16160f62863de29a66c0074eaf453d6ab69c90327ff76261908`.
+and is not published. [`v0.3.0`](https://github.com/NjordLabs/nodeio-serve/releases/tag/v0.3.0)
+is the GitHub Release. The wheel sha256 is written when the release
+workflow uploads it. That workflow pins pydevops `3.11.3`
+(`8b0d7d08`). Quality jobs stay on pydevops `3.11.1` (`efef9824`).
 
 ## Scope
 
@@ -65,7 +65,8 @@ local CI diff is the check.
 ## Suggested next work
 
 PyPI publish stays open (`SERVE-001-T2`). The example image stays
-unpublished. `SERVE-003` passes `GHCR_READ_TOKEN` into container lint.
+unpublished. `SERVE-003` is done: container lint receives
+`GHCR_READ_TOKEN`.
 
 ## Recent history
 
@@ -73,5 +74,6 @@ unpublished. `SERVE-003` passes `GHCR_READ_TOKEN` into container lint.
 - ci: hash-lock the image and pin the quality workflows
 - docs: record 0.2.0
 - release: tag v0.2.0
+- chore(release): set 0.3.0 and pin the release workflow to pydevops 3.11.3
 
 *Last updated: 2026-11-26.*
