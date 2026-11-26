@@ -69,6 +69,38 @@ milestones:
               - sh scripts/check-ci-docker.sh
             guardrail_refs:
               - PY-TEST-002
+      - id: PIN-001
+        status: done
+        title: Pin guardrails 1.17.1 and hash the container install
+        overview:
+          problem: >-
+            The repository still cited guardrails 1.15.0, and the container
+            install did not pin dependency hashes.
+          goal: >-
+            Pins match the current org tags, dev tools live in a dependency
+            group, and the container install requires hashes.
+        decision: >-
+          In the context of the org quality bar, facing a stale pin, we
+          decided to move to guardrails 1.17.1 and hash the container
+          install, to achieve the current gates, accepting a lock refresh.
+        acceptance_criteria:
+          - docs/guardrails is 1.17.1 and .github/scaffold is 1.14.3
+          - Dev tools are a dependency group
+          - The container install uses --require-hashes
+        guardrail_refs:
+          - SC-DEP-008
+        tasks:
+          - id: PIN-001-T1
+            status: done
+            title: Bump the pins and hash the container install
+            instructions:
+              files:
+                - scripts/check-ci-docker.sh
+                - pyproject.toml
+            verification:
+              - sh scripts/check-ci-local.sh
+            guardrail_refs:
+              - SC-DEP-008
       - id: SERVE-002
         status: done
         title: Serve the run method from a generated stub
