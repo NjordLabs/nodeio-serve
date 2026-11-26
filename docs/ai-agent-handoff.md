@@ -5,8 +5,9 @@
 `nodeio-serve` is the HTTP and gRPC ingress. Python 3.13 and 3.14.
 Public repository `NjordLabs/nodeio-serve`. The image is an example
 and is not published. [`v0.3.0`](https://github.com/NjordLabs/nodeio-serve/releases/tag/v0.3.0)
-is the GitHub Release. The wheel sha256 is written when the release
-workflow uploads it. That workflow pins pydevops `3.11.3`
+is the GitHub Release. The wheel sha256 is
+`a58ea35c0378ddbcd2aa3d7bcb52fe540b482f0705777ec1bef2841bb3c83a6c`.
+The release workflow pins pydevops `3.11.3`
 (`8b0d7d08`). Quality jobs stay on pydevops `3.11.1` (`efef9824`).
 
 ## Scope
@@ -75,5 +76,6 @@ unpublished. `SERVE-003` is done: container lint receives
 - docs: record 0.2.0
 - release: tag v0.2.0
 - chore(release): set 0.3.0 and pin the release workflow to pydevops 3.11.3
+- docs(readme): pin the published 0.3.0 wheel hash
 
 *Last updated: 2026-11-26.*
